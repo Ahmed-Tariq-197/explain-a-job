@@ -1,4 +1,4 @@
-import type { AnalyzeResponse, SkillGap } from "@/lib/api";
+import type { AnalyzeResult as AnalyzeResponse, SkillGap } from "@/kbs/types";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
