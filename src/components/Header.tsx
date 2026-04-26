@@ -1,8 +1,6 @@
 import logo from "@/assets/rejectedin-logo.png";
-import { Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-export function Header({ onOpenSettings }: { onOpenSettings: () => void }) {
+export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2.5">
@@ -13,14 +11,17 @@ export function Header({ onOpenSettings }: { onOpenSettings: () => void }) {
               Rejected<span className="text-primary">In</span>
             </h1>
             <p className="text-[11px] leading-tight text-muted-foreground">
-              Multi-Agent Knowledge-Based System
+              Multi-Agent Knowledge-Based System · Explainable rule-based AI
             </p>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={onOpenSettings} className="gap-1.5">
-          <Settings className="h-4 w-4" />
-          API Settings
-        </Button>
+        <nav className="hidden items-center gap-4 text-xs text-muted-foreground sm:flex">
+          <span>6 Agents</span>
+          <span>·</span>
+          <span>25+ Inference Rules</span>
+          <span>·</span>
+          <span>{15} Role Profiles</span>
+        </nav>
       </div>
     </header>
   );

@@ -1,4 +1,4 @@
-import type { AnalyzeResponse, SkillGap } from "@/lib/api";
+import type { AnalyzeResult as AnalyzeResponse, SkillGap } from "@/kbs/types";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,9 +12,7 @@ function statusVariant(status: string) {
 }
 
 function ruleIds(item: SkillGap): string[] {
-  if (item.rule_ids?.length) return item.rule_ids;
-  if (item.rule_id) return [item.rule_id];
-  return [];
+  return item.rule_ids ?? [];
 }
 
 export function ResultTabs({ data }: { data: AnalyzeResponse }) {
@@ -147,7 +145,7 @@ export function ResultTabs({ data }: { data: AnalyzeResponse }) {
               { k: "experience", label: "Experience", max: 20 },
               { k: "communication", label: "Communication", max: 20 },
             ].map(({ k, label, max }) => {
-              const v = breakdown[k] ?? 0;
+              const v = (breakdown as Record<string, number>)[k] ?? 0;
               return (
                 <div key={k}>
                   <div className="mb-1 flex justify-between"><span>{label}</span><span className="font-semibold">{v}/{max}</span></div>
@@ -215,19 +213,23 @@ export function ResultTabs({ data }: { data: AnalyzeResponse }) {
           </CardHeader>
           <CardContent>
             {ruleLog.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No rule_log returned by the API. (Aggregated rule IDs are still visible per-agent in the Decision tab.)
-              </p>
+              <p className="text-sm text-muted-foreground">No rules fired.</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="border-b border-border text-left text-xs uppercase text-muted-foreground">
-                    <tr><th className="py-2 pr-3">Rule</th><th className="py-2 pr-3">Condition</th><th className="py-2">Outcome</th></tr>
+                    <tr>
+                      <th className="py-2 pr-3">Rule</th>
+                      <th className="py-2 pr-3">Agent</th>
+                      <th className="py-2 pr-3">Condition (IF)</th>
+                      <th className="py-2">Outcome (THEN)</th>
+                    </tr>
                   </thead>
                   <tbody>
                     {ruleLog.map((e, i) => (
                       <tr key={i} className="border-b border-border/60 align-top">
-                        <td className="py-2 pr-3"><Badge variant="outline" className="font-mono text-[10px]">{e.rule_id ?? e.id}</Badge></td>
+                        <td className="py-2 pr-3"><Badge variant="outline" className="font-mono text-[10px]">{e.rule_id}</Badge></td>
+                        <td className="py-2 pr-3 text-xs text-muted-foreground">{e.agent}</td>
                         <td className="py-2 pr-3 text-muted-foreground">{e.condition}</td>
                         <td className="py-2 font-medium">{e.outcome}</td>
                       </tr>
