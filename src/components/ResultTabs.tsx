@@ -12,9 +12,7 @@ function statusVariant(status: string) {
 }
 
 function ruleIds(item: SkillGap): string[] {
-  if (item.rule_ids?.length) return item.rule_ids;
-  if (item.rule_id) return [item.rule_id];
-  return [];
+  return item.rule_ids ?? [];
 }
 
 export function ResultTabs({ data }: { data: AnalyzeResponse }) {
@@ -147,7 +145,7 @@ export function ResultTabs({ data }: { data: AnalyzeResponse }) {
               { k: "experience", label: "Experience", max: 20 },
               { k: "communication", label: "Communication", max: 20 },
             ].map(({ k, label, max }) => {
-              const v = breakdown[k] ?? 0;
+              const v = (breakdown as Record<string, number>)[k] ?? 0;
               return (
                 <div key={k}>
                   <div className="mb-1 flex justify-between"><span>{label}</span><span className="font-semibold">{v}/{max}</span></div>
@@ -227,7 +225,7 @@ export function ResultTabs({ data }: { data: AnalyzeResponse }) {
                   <tbody>
                     {ruleLog.map((e, i) => (
                       <tr key={i} className="border-b border-border/60 align-top">
-                        <td className="py-2 pr-3"><Badge variant="outline" className="font-mono text-[10px]">{e.rule_id ?? e.id}</Badge></td>
+                        <td className="py-2 pr-3"><Badge variant="outline" className="font-mono text-[10px]">{e.rule_id}</Badge></td>
                         <td className="py-2 pr-3 text-muted-foreground">{e.condition}</td>
                         <td className="py-2 font-medium">{e.outcome}</td>
                       </tr>
